@@ -12,9 +12,10 @@ class Level
 {
 private:
     int start_pose_x, start_pose_y;
+	int flag_pose_x, flag_pose_y;
 
     std::vector<point> plates;
-    Sprite sBackground, sPlat, sPers, sFalg;
+    Sprite sBackground, sPlat, sPers, sFlag;
     Texture back_ground, plate, player, flag_img;
 
     void generate_level(std::string level_file)
@@ -23,7 +24,6 @@ private:
         fin.open(level_file);
 
         int x = 0, y = 50;
-        int count = 0;
 
         std::string str;
         for (; getline(fin, str);)
@@ -35,14 +35,8 @@ private:
                     point pf;
                     pf.x = x;
                     pf.y = y;
-                    if (count == 3)
-                    {
-                        start_pose_x = x + 25;
-                        start_pose_y = y - 25;
-                    }
 
                     plates.push_back(pf);
-                    count++;
                 }
                 x += plat_width;
             }
@@ -50,6 +44,19 @@ private:
             x = 0;
         }
 
+		point min = plates[0];
+		point max = plates[0];
+		for (auto plate : plates)
+		{
+			if (plate.x < min.x) min = plate;
+			if (plate.x > max.x) max = plate;
+		}
+
+		start_pose_x = min.x + 25;
+		start_pose_y = min.y - 25;
+
+		flag_pose_x = max.x + 25 - flag_width / 2;
+		flag_pose_y = max.y - 25 - flag_height / 2;
     }
 
 public:
@@ -65,9 +72,11 @@ public:
         sBackground = Sprite(back_ground);
         sPlat = Sprite(plate);
         sPers = Sprite(player);
-        sFalg = Sprite(flag_img);
+        sFlag = Sprite(flag_img);
 
         generate_level(level_file);
+
+		sFlag.setPosition(flag_pose_x, flag_pose_y);
     }
 
     void start(RenderWindow& app)
@@ -97,6 +106,12 @@ public:
                 y = start_pose_y;
                 delta_l = delta_r = 1;
             }
+
+			if (x + radiouse > flag_pose_x && x + radiouse < flag_pose_x + flag_width &&
+			y + radiouse  > flag_pose_y && y + radiouse  < flag_pose_y + flag_height)
+			{
+				break;
+			}
 
             //right mooving
             if (Keyboard::isKeyPressed(Keyboard::Right))
@@ -163,6 +178,7 @@ public:
             sPers.setPosition(x, y);
 
             app.draw(sBackground);
+			app.draw(sFlag);
             app.draw(sPers);
             for (int i = 0; i < plates.size(); i++)
             {
@@ -171,7 +187,6 @@ public:
             }
 
             app.display();
-
         }
     }
 };

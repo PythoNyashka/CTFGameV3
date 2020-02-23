@@ -4,14 +4,26 @@ using json = nlohmann::json;
 
 // static std::string root_folder = "../static/sprites/";
 
-static json sprites_img_json = json(R"(
-  {
-    "level_background_img": "static/back.png",
-    "flag_img": "static/flag.png",
-    "platform_img": "static/platform.png",
-    "player_img": "static/player.png",
-    "start_button_img": "static/press_f.png"
-  }
+static json sprites_img_json = json(
+R"(
+	{
+		"level_background_img": "static/back.png",
+		"flag_img": "static/flag.png",
+		"platform_img": "static/platform.png",
+		"player_img": "static/player.png",
+		"start_button_img": "static/press_f.png"
+	}
+)"_json);
+
+static json levels_map_json = json(
+R"(
+	{
+		"1": "levels/level1.txt",
+		"2": "levels/level2.txt",
+		"3": "levels/level3.txt",
+		"4": "levels/level4.txt",
+		"5": "levels/level5.txt"
+	}
 )"_json);
 
 
@@ -23,3 +35,4 @@ const float gravity_coefficient = 0.27;
 const int jump_coefficient = 8;
 const int radiouse = 16;
 const float a = 0.08;
+const int flag_width = 40, flag_height = 80;
