@@ -36,3 +36,5 @@ const int jump_coefficient = 8;
 const int radiouse = 16;
 const float a = 0.08;
 const int flag_width = 40, flag_height = 80;
+
+//const std::string server_url = "https://ef04c31d.ngrok.io/";

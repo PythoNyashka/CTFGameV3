@@ -6,17 +6,23 @@
 #include "config.cpp"
 
 #include <SFML/Graphics.hpp>
+#include <curl/curl.h>
 
 using namespace sf;
 class Level
 {
 private:
-    int start_pose_x, start_pose_y;
-	int flag_pose_x, flag_pose_y;
+    point start_pose;
+	point flag_pose;
 
     std::vector<point> plates;
     Sprite sBackground, sPlat, sPers, sFlag;
     Texture back_ground, plate, player, flag_img;
+
+	static bool cmp(point a, point b)
+	{
+		return a.x < b.x;
+	}
 
     void generate_level(std::string level_file)
     {
@@ -44,19 +50,13 @@ private:
             x = 0;
         }
 
-		point min = plates[0];
-		point max = plates[0];
-		for (auto plate : plates)
-		{
-			if (plate.x < min.x) min = plate;
-			if (plate.x > max.x) max = plate;
-		}
+		std::sort(plates.begin(), plates.end(), cmp);
 
-		start_pose_x = min.x + 25;
-		start_pose_y = min.y - 25;
+		start_pose.x = plates[0].x + 25;
+		start_pose.y = plates[0].y - 25;
 
-		flag_pose_x = max.x + 25 - flag_width / 2;
-		flag_pose_y = max.y - 25 - flag_height / 2;
+		flag_pose.x = plates[plates.size() - 1].x + 25 - flag_width / 2;
+		flag_pose.y = plates[plates.size() - 1].y - 25 - flag_height / 2;
     }
 
 public:
@@ -76,12 +76,12 @@ public:
 
         generate_level(level_file);
 
-		sFlag.setPosition(flag_pose_x, flag_pose_y);
+		sFlag.setPosition(flag_pose.x, flag_pose.y);
     }
 
     void start(RenderWindow& app)
     {
-        float x = start_pose_x, y = start_pose_y;
+        float x = start_pose.x, y = start_pose.y;
         float dx = 0, dy = 0;
         float delta_r = 0, delta_l = 0;
 
@@ -102,13 +102,13 @@ public:
             //go to start position
             if (y > max_y || x > max_x || x < 0)
             {
-                x = start_pose_x;
-                y = start_pose_y;
+                x = start_pose.x;
+                y = start_pose.y;
                 delta_l = delta_r = 1;
             }
 
-			if (x + radiouse > flag_pose_x && x + radiouse < flag_pose_x + flag_width &&
-			y + radiouse  > flag_pose_y && y + radiouse  < flag_pose_y + flag_height)
+			if (x + radiouse > flag_pose.x && x + radiouse < flag_pose.x + flag_width &&
+			y + radiouse  > flag_pose.y && y + radiouse  < flag_pose.y + flag_height)
 			{
 				break;
 			}
