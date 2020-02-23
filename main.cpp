@@ -13,7 +13,6 @@ int main()
 
     music.setVolume(50.f);
     music.setLoop(true);
-
     music.play();
 
     sf::Texture start_button_texture, back_ground;
