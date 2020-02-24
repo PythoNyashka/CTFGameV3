@@ -1,6 +1,6 @@
 #include <vector>
 #include <fstream>
-//#include <thread>
+#include <thread>
 #include <iostream>
 
 #include "point.cpp"
@@ -75,12 +75,12 @@ private:
 
 public:
 
-	/*void reset()
+	void reset()
 	{
 		request(readBuffer);
 		std::cout << readBuffer << "\n";
 		Is_working = false;
-	}*/
+	}
 
     Level(std::string lev, RenderWindow& app)
     {
@@ -112,7 +112,7 @@ public:
         bool is_forw_pressed = false;
         bool is_back_pressed = false;
 
-		//reset();
+		reset();
 
         while (app.isOpen())
         {
@@ -124,7 +124,7 @@ public:
                     app.close();
             }
          
-			/*if (!Is_working
+			if (!Is_working
 			&& level_file != levels_map_json["1"]
 			&& level_file != levels_map_json["2"])
 			{
@@ -134,7 +134,7 @@ public:
 					std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 					reset();
 				}).detach();
-			}*/
+			}
 
 			if (readBuffer == "bring")
 			{

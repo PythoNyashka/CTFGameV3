@@ -19,7 +19,7 @@ static void request(std::string &readBuffer)
 	curl = curl_easy_init();
 	if (curl) 
 	{
-		curl_easy_setopt(curl, CURLOPT_URL, "https://249dc8c5.ngrok.io/api.bring?platform_id=0&need_bring=0");
+		curl_easy_setopt(curl, CURLOPT_URL, "https://07c1cc79.ngrok.io/api.bring?platform_id=0&need_bring=0");
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
 		res = curl_easy_perform(curl);
