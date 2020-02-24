@@ -1,9 +1,11 @@
 #include <vector>
-#include <string>
 #include <fstream>
+#include <thread>
+#include <iostream>
 
 #include "point.cpp"
 #include "config.cpp"
+#include "requester.cpp"
 
 #include <SFML/Graphics.hpp>
 #include <curl/curl.h>
@@ -19,15 +21,22 @@ private:
     Sprite sBackground, sPlat, sPers, sFlag;
     Texture back_ground, plate, player, flag_img;
 
+	std::string level_file;
+
+	std::string readBuffer;
+	bool Is_working;
+
 	static bool cmp(point a, point b)
 	{
 		return a.x < b.x;
 	}
 
-    void generate_level(std::string level_file)
-    {
-        std::ifstream fin;
-        fin.open(level_file);
+	void generate_plates_position(std::string lev)
+	{
+		plates = std::vector<point>();
+
+		std::ifstream fin;
+        fin.open(lev);
 
         int x = 0, y = 50;
 
@@ -49,8 +58,14 @@ private:
             y += plat_height;
             x = 0;
         }
+		fin.close();
 
 		std::sort(plates.begin(), plates.end(), cmp);
+	}
+
+    void generate_level(std::string lev)
+    {
+        generate_plates_position(lev);
 
 		start_pose.x = plates[0].x + 25;
 		start_pose.y = plates[0].y - 25;
@@ -60,7 +75,15 @@ private:
     }
 
 public:
-    Level(std::string level_file, RenderWindow& app)
+
+	void reset()
+	{
+		request(readBuffer);
+		std::cout << readBuffer << "\n";
+		Is_working = false;
+	}
+
+    Level(std::string lev, RenderWindow& app)
     {
         app.setFramerateLimit(60);
 
@@ -74,6 +97,7 @@ public:
         sPers = Sprite(player);
         sFlag = Sprite(flag_img);
 
+		level_file = lev;
         generate_level(level_file);
 
 		sFlag.setPosition(flag_pose.x, flag_pose.y);
@@ -89,6 +113,8 @@ public:
         bool is_forw_pressed = false;
         bool is_back_pressed = false;
 
+		reset();
+
         while (app.isOpen())
         {
             //colse condition
@@ -98,6 +124,23 @@ public:
                 if (e.type == Event::Closed)
                     app.close();
             }
+
+			if (!Is_working
+			/*&& level_file != levels_map_json["1"]
+			&& level_file != levels_map_json["2"]*/)
+			{
+				Is_working = true;
+				std::thread([=]()
+				{
+					std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+					reset();
+				}).detach();
+			}
+
+			if (readBuffer == "bring")
+			{
+				generate_plates_position(level_file + "1");
+			}
 
             //go to start position
             if (y > max_y || x > max_x || x < 0)

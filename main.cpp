@@ -1,5 +1,4 @@
 #include "level.cpp"
-#include <iostream>
 #include <SFML/Audio.hpp>
 
 int main()
