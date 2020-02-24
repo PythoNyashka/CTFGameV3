@@ -1,15 +1,14 @@
 #include <vector>
 #include <fstream>
-#include <thread>
+//#include <thread>
 #include <iostream>
 
 #include "point.cpp"
 #include "config.cpp"
 #include "requester.cpp"
-
+//#undef min
+//#undef max
 #include <SFML/Graphics.hpp>
-#include <curl/curl.h>
-
 using namespace sf;
 class Level
 {
@@ -76,12 +75,12 @@ private:
 
 public:
 
-	void reset()
+	/*void reset()
 	{
 		request(readBuffer);
 		std::cout << readBuffer << "\n";
 		Is_working = false;
-	}
+	}*/
 
     Level(std::string lev, RenderWindow& app)
     {
@@ -113,7 +112,7 @@ public:
         bool is_forw_pressed = false;
         bool is_back_pressed = false;
 
-		reset();
+		//reset();
 
         while (app.isOpen())
         {
@@ -124,10 +123,10 @@ public:
                 if (e.type == Event::Closed)
                     app.close();
             }
-
-			if (!Is_working
-			/*&& level_file != levels_map_json["1"]
-			&& level_file != levels_map_json["2"]*/)
+         
+			/*if (!Is_working
+			&& level_file != levels_map_json["1"]
+			&& level_file != levels_map_json["2"])
 			{
 				Is_working = true;
 				std::thread([=]()
@@ -135,7 +134,7 @@ public:
 					std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 					reset();
 				}).detach();
-			}
+			}*/
 
 			if (readBuffer == "bring")
 			{
