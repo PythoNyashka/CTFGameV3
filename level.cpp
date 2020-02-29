@@ -2,12 +2,13 @@
 #include <fstream>
 #include <thread>
 #include <iostream>
+#include <ctime>
 
 #include "point.cpp"
-#include "config.cpp"
 #include "requester.cpp"
-//#undef min
-//#undef max
+#include "hasher.cpp"
+#include "config.cpp"
+
 #include <SFML/Graphics.hpp>
 using namespace sf;
 class Level
@@ -15,14 +16,18 @@ class Level
 private:
     point start_pose;
 	point flag_pose;
+	int new_plate_pose;
 
     std::vector<point> plates;
+
     Sprite sBackground, sPlat, sPers, sFlag;
     Texture back_ground, plate, player, flag_img;
 
 	std::string level_file;
-
 	std::string readBuffer;
+	std::string month;
+	std::string hashed_messange;
+	
 	bool Is_working;
 
 	static bool cmp(point a, point b)
@@ -60,6 +65,8 @@ private:
 		fin.close();
 
 		std::sort(plates.begin(), plates.end(), cmp);
+
+		new_plate_pose = plates[2].x - plat_width * 3;
 	}
 
     void generate_level(std::string lev)
@@ -78,7 +85,7 @@ public:
 	void reset()
 	{
 		request(readBuffer);
-		std::cout << readBuffer << "\n";
+		hashed_messange = "yes_" + Get_hash(month);
 		Is_working = false;
 	}
 
@@ -100,17 +107,23 @@ public:
         generate_level(level_file);
 
 		sFlag.setPosition(flag_pose.x, flag_pose.y);
+
+		std::time_t now_time = std::time(0);
+		std::tm *date = localtime(&now_time);
+		char* dt = asctime(date);
+		std::string mon = "";
+		mon += dt[4]; mon += dt[5]; mon += dt[6];
+
+		month = months_json[mon];
     }
 
     void start(RenderWindow& app)
     {
         float x = start_pose.x, y = start_pose.y;
-        float dx = 0, dy = 0;
+        float dx = 0.2, dy = 0;
         float delta_r = 0, delta_l = 0;
 
         bool was_pressed = true;
-        bool is_forw_pressed = false;
-        bool is_back_pressed = false;
 
 		reset();
 
@@ -136,9 +149,12 @@ public:
 				}).detach();
 			}
 
-			if (readBuffer == "bring")
+			if (readBuffer != hashed_messange
+			&& plates[2].x > new_plate_pose
+			&& level_file != levels_map_json["1"]
+			&& level_file != levels_map_json["2"])
 			{
-				generate_plates_position(level_file + "1");
+				plates[2].x -= dx;
 			}
 
             //go to start position
@@ -150,10 +166,7 @@ public:
             }
 
 			if (x + radiouse > flag_pose.x && x + radiouse < flag_pose.x + flag_width &&
-			y + radiouse  > flag_pose.y && y + radiouse  < flag_pose.y + flag_height)
-			{
-				break;
-			}
+			y + radiouse  > flag_pose.y && y + radiouse  < flag_pose.y + flag_height) break;
 
             //right mooving
             if (Keyboard::isKeyPressed(Keyboard::Right))

@@ -342,3 +342,9 @@ healthchecksdb
 # Linux VScode compiling files
 make.sh
 main
+
+vcpkg/
+.vscode/
+
+#files for testing
+temp/

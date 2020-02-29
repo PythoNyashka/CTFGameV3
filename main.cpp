@@ -6,13 +6,13 @@ int main()
     sf::RenderWindow app(sf::VideoMode(max_x, max_y), "CTFGame();");
     app.setFramerateLimit(60);
 
-    sf::Music music;
-    if (!music.openFromFile("static/all_lvls.ogg"))
-         return 1;
+    // sf::Music music;
+    // if (!music.openFromFile("static/all_lvls.ogg"))
+    //      return 1;
 
-    music.setVolume(50.f);
-    music.setLoop(true);
-    music.play();
+    // music.setVolume(50.f);
+    // music.setLoop(true);
+    // music.play();
 
     sf::Texture start_button_texture, back_ground;
     back_ground.loadFromFile(sprites_img_json["level_background_img"]);
@@ -41,7 +41,7 @@ int main()
 
 	std::vector<Level> levels;
 
-	for (int i = 1; i < 5; i++)
+	for (int i = 1; i <= 5; i++)
 	{
 		std::string s = std::to_string(i);
 		levels.push_back(Level(levels_map_json[s], app));
