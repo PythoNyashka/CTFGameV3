@@ -12,7 +12,7 @@
 using namespace CryptoPP;
 
 
-std::string Get_hash(std::string month)
+static std::string Get_hash(std::string month)
 {
 	std::string message = month + "CTFGame();";
 

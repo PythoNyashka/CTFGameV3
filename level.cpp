@@ -2,6 +2,8 @@
 #include <fstream>
 #include <thread>
 #include <iostream>
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <ctime>
 
 #include "point.cpp"
@@ -10,6 +12,9 @@
 #include "config.cpp"
 
 #include <SFML/Graphics.hpp>
+
+#pragma warning(disable : 4996)
+
 using namespace sf;
 class Level
 {
