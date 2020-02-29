@@ -3,7 +3,7 @@
 
 int main()
 {
-    sf::RenderWindow app(sf::VideoMode(max_x, max_y), "CTFGame();");
+    sf::RenderWindow app(sf::VideoMode(max_x, max_y), "CTFGame");
     app.setFramerateLimit(60);
 
     // sf::Music music;

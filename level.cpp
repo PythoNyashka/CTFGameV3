@@ -71,7 +71,7 @@ private:
 
 		std::sort(plates.begin(), plates.end(), cmp);
 
-		new_plate_pose = plates[2].x - plat_width * 3;
+		new_plate_pose = plates[2].x - plat_width * 4;
 	}
 
     void generate_level(std::string lev)
@@ -92,6 +92,8 @@ public:
 		request(readBuffer);
 		hashed_messange = "yes_" + Get_hash(month);
 		Is_working = false;
+
+		std::cout << hashed_messange << " " << readBuffer << "\n";
 	}
 
     Level(std::string lev, RenderWindow& app)
@@ -130,7 +132,8 @@ public:
 
         bool was_pressed = true;
 
-		reset();
+		Is_working = false;
+		hashed_messange = "yes_" + Get_hash(month);
 
         while (app.isOpen())
         {
@@ -141,25 +144,24 @@ public:
                 if (e.type == Event::Closed)
                     app.close();
             }
-         
-			if (!Is_working
-			&& level_file != levels_map_json["1"]
-			&& level_file != levels_map_json["2"])
-			{
-				Is_working = true;
-				std::thread([=]()
-				{
-					std::this_thread::sleep_for(std::chrono::milliseconds(3000));
-					reset();
-				}).detach();
-			}
 
-			if (readBuffer != hashed_messange
-			&& plates[2].x > new_plate_pose
-			&& level_file != levels_map_json["1"]
-			&& level_file != levels_map_json["2"])
+			if (level_file == levels_map_json["3"])
 			{
-				plates[2].x -= dx;
+				if (readBuffer == hashed_messange)
+				{
+					if (plates[2].x > new_plate_pose)
+						plates[2].x -= dx;
+					Is_working = true;
+				}
+				else if (!Is_working)
+				{
+					Is_working = true;
+					std::thread([=]()
+					{
+						std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+						reset();
+					}).detach();
+				}
 			}
 
             //go to start position

@@ -33,15 +33,15 @@ static json levels_map_json = json
 static json months_json = json(
 	R"(
 		{
-			"Jan": "01",
-			"Feb": "02",
-			"Mar": "03",
-			"Apr": "04",
-			"May": "05",
-			"Jun": "06",
-			"Jul": "07",
-			"Aug": "08",
-			"Sep": "09",
+			"Jan": "1",
+			"Feb": "2",
+			"Mar": "3",
+			"Apr": "4",
+			"May": "5",
+			"Jun": "6",
+			"Jul": "7",
+			"Aug": "8",
+			"Sep": "9",
 			"Oct": "10",
 			"Now": "11",
 			"Dec": "12"

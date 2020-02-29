@@ -14,7 +14,7 @@ using namespace CryptoPP;
 
 static std::string Get_hash(std::string month)
 {
-	std::string message = month + "CTFGame();";
+	std::string message = month + "CTFGame";
 
 	std::string hashed_messange;
 	Weak::MD5 md5;
@@ -25,6 +25,10 @@ static std::string Get_hash(std::string month)
 	encryptor.AddDefaultRoute(filter);
 
 	StringSource ss(message, true, new Redirector(encryptor));
+
+	for (auto it = hashed_messange.begin(); it != hashed_messange.end(); it++)
+		if (*it >= 65 && *it <= 90)
+			*it += 32;
 
 	return hashed_messange;
 }
