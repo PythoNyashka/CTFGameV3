@@ -27,10 +27,10 @@ private:
 
     Sprite sBackground, sPlat, sPers, sFlag;
     Texture back_ground, plate, player, flag_img;
+	Text flag;
 
 	std::string level_file;
 	std::string readBuffer;
-	std::string month;
 	std::string hashed_messange;
 	
 	bool Is_working;
@@ -87,10 +87,17 @@ private:
 
 public:
 
-	void reset()
+	void Bring_reset()
 	{
-		request(readBuffer);
-		hashed_messange = "yes_" + Get_hash(month);
+		Bring_request(readBuffer);
+		Is_working = false;
+
+		std::cout << hashed_messange << " " << readBuffer << "\n";
+	}
+
+	void Flag_reset()
+	{
+		Flag_request(readBuffer);
 		Is_working = false;
 
 		std::cout << hashed_messange << " " << readBuffer << "\n";
@@ -110,6 +117,15 @@ public:
         sPers = Sprite(player);
         sFlag = Sprite(flag_img);
 
+		Font font;
+		font.loadFromFile("static/arial.ttf");
+
+		flag.setFont(font);
+		flag.setString("");
+		flag.setCharacterSize(26);
+		flag.setFillColor(Color::Red);
+		flag.setStyle(Text::Bold | Text::Underlined);
+
 		level_file = lev;
         generate_level(level_file);
 
@@ -121,22 +137,24 @@ public:
 		std::string mon = "";
 		mon += dt[4]; mon += dt[5]; mon += dt[6];
 
-		month = months_json[mon];
+		std::string month = months_json[mon];
+
+		hashed_messange = "yes_" + Get_hash(month);
     }
 
     void start(RenderWindow& app)
     {
         float x = start_pose.x, y = start_pose.y;
-        float dx = 0.2, dy = 0;
+        float dx = 0.3, dy = 0;
         float delta_r = 0, delta_l = 0;
 
         bool was_pressed = true;
 
 		Is_working = false;
-		hashed_messange = "yes_" + Get_hash(month);
 
         while (app.isOpen())
         {
+			app.clear();
             //colse condition
             Event e;
             while (app.pollEvent(e))
@@ -159,9 +177,22 @@ public:
 					std::thread([=]()
 					{
 						std::this_thread::sleep_for(std::chrono::milliseconds(3000));
-						reset();
+						Bring_reset();
 					}).detach();
 				}
+			}
+			else if (level_file == levels_map_json["5"])
+			{
+				if (!Is_working)
+				{
+					Is_working = true;
+					std::thread([=]()
+					{
+						std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+						Flag_reset();
+					}).detach();
+				}
+				else flag.setString(readBuffer);
 			}
 
             //go to start position
@@ -242,6 +273,7 @@ public:
             app.draw(sBackground);
 			app.draw(sFlag);
             app.draw(sPers);
+			app.draw(flag);
             for (int i = 0; i < plates.size(); i++)
             {
                 sPlat.setPosition(plates[i].x, plates[i].y);

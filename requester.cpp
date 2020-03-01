@@ -9,7 +9,7 @@ static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *use
     return size * nmemb;
 }
 
-static void request(std::string &readBuffer)
+static void Bring_request(std::string &readBuffer)
 {
 	static CURL *curl;
 	static CURLcode res;
@@ -37,7 +37,7 @@ static void Flag_request(std::string &readBuffer)
 	curl = curl_easy_init();
 	if (curl) 
 	{
-		curl_easy_setopt(curl, CURLOPT_URL, "http://task5.wbcdev.ru/api.getflag?hash=9bef9c3a6419c45b1a3bc482f33fce8f");
+		curl_easy_setopt(curl, CURLOPT_URL, "http://task5.wbcdev.ru/api.getflag?hash=d6b809d4d05e9e050efdd6df7f5752fa");
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
 		res = curl_easy_perform(curl);
