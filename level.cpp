@@ -117,15 +117,6 @@ public:
         sPers = Sprite(player);
         sFlag = Sprite(flag_img);
 
-		Font font;
-		font.loadFromFile("static/arial.ttf");
-
-		flag.setFont(font);
-		flag.setString("");
-		flag.setCharacterSize(26);
-		flag.setFillColor(Color::Red);
-		flag.setStyle(Text::Bold | Text::Underlined);
-
 		level_file = lev;
         generate_level(level_file);
 
@@ -162,7 +153,7 @@ public:
                 if (e.type == Event::Closed)
                     app.close();
             }
-
+            app.draw(sBackground);
 			if (level_file == levels_map_json["3"])
 			{
 				if (readBuffer == hashed_messange)
@@ -192,7 +183,17 @@ public:
 						Flag_reset();
 					}).detach();
 				}
-				else flag.setString(readBuffer);
+                else
+                {
+                    Font font;
+                    font.loadFromFile("static/pixel.ttf");
+
+                    flag.setFont(font);
+                    flag.setString("");
+                    flag.setCharacterSize(26);
+                    flag.setFillColor(Color::Red);
+                    flag.setStyle(Text::Bold | Text::Underlined);
+                }
 			}
 
             //go to start position
@@ -270,7 +271,7 @@ public:
 
             sPers.setPosition(x, y);
 
-            app.draw(sBackground);
+            
 			app.draw(sFlag);
             app.draw(sPers);
 			app.draw(flag);
