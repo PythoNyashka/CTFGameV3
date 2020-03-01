@@ -173,27 +173,30 @@ public:
 				}
 			}
 			else if (level_file == levels_map_json["5"])
-			{
+			{   
+                Font font;
+                font.loadFromFile("static/pixel.ttf");
+
+                flag.setFont(font);
+                flag.setString("Hello World!");
+                flag.setCharacterSize(26);
+                flag.setFillColor(Color::Red);
+                flag.setStyle(Text::Bold | Text::Underlined);
+                flag.setPosition(100, 100);
+                app.draw(flag);
 				if (!Is_working)
 				{
 					Is_working = true;
 					std::thread([=]()
 					{
 						std::this_thread::sleep_for(std::chrono::milliseconds(3000));
-						Flag_reset();
+                        Flag_reset();
 					}).detach();
 				}
-                else
+                /*else
                 {
-                    Font font;
-                    font.loadFromFile("static/pixel.ttf");
-
-                    flag.setFont(font);
-                    flag.setString("");
-                    flag.setCharacterSize(26);
-                    flag.setFillColor(Color::Red);
-                    flag.setStyle(Text::Bold | Text::Underlined);
-                }
+                    
+                }*/
 			}
 
             //go to start position
