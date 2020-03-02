@@ -12,7 +12,8 @@ static json sprites_img_json = json
 			"flag_img": "static/flag.png",
 			"platform_img": "static/platform.png",
 			"player_img": "static/player.png",
-			"start_button_img": "static/press_f.png"
+			"start_button_img": "static/press_f.png",
+			"flag": "static/end_back.png"
 		}
 	)"_json
 );

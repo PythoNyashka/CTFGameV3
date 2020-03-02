@@ -14,14 +14,16 @@ int main()
     // music.setLoop(true);
     // music.play();
 
-    sf::Texture start_button_texture, back_ground;
+    sf::Texture start_button_texture, back_ground, flag_back_ground;
     back_ground.loadFromFile(sprites_img_json["level_background_img"]);
     start_button_texture.loadFromFile(sprites_img_json["start_button_img"]);
+	flag_back_ground.loadFromFile(sprites_img_json["flag"]);
 
-    sf::Sprite start_buton(start_button_texture), background(back_ground);
+    sf::Sprite start_buton(start_button_texture), background(back_ground), Flag_back(flag_back_ground);
 
     while (app.isOpen())
     {
+		app.clear();
         Event e;
         while (app.pollEvent(e))
         {
@@ -49,6 +51,24 @@ int main()
 
     for (auto level : levels)
 		level.start(app);
+
+	while (app.isOpen())
+	{
+		Event e;
+        while (app.pollEvent(e))
+        {
+            if (e.type == Event::Closed)
+                app.close();
+        }
+
+		if (Keyboard::isKeyPressed(Keyboard::Escape))
+		{
+            break;
+        }
+
+		app.draw(Flag_back);
+		app.display();
+	}
 
     return 0;
 }

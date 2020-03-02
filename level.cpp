@@ -27,7 +27,6 @@ private:
 
     Sprite sBackground, sPlat, sPers, sFlag;
     Texture back_ground, plate, player, flag_img;
-	Text flag;
 
 	std::string level_file;
 	std::string readBuffer;
@@ -153,7 +152,7 @@ public:
                 if (e.type == Event::Closed)
                     app.close();
             }
-            app.draw(sBackground);
+
 			if (level_file == levels_map_json["3"])
 			{
 				if (readBuffer == hashed_messange)
@@ -174,16 +173,6 @@ public:
 			}
 			else if (level_file == levels_map_json["5"])
 			{   
-                Font font;
-                font.loadFromFile("static/pixel.ttf");
-
-                flag.setFont(font);
-                flag.setString("Hello World!");
-                flag.setCharacterSize(26);
-                flag.setFillColor(Color::Red);
-                flag.setStyle(Text::Bold | Text::Underlined);
-                flag.setPosition(100, 100);
-                app.draw(flag);
 				if (!Is_working)
 				{
 					Is_working = true;
@@ -193,10 +182,6 @@ public:
                         Flag_reset();
 					}).detach();
 				}
-                /*else
-                {
-                    
-                }*/
 			}
 
             //go to start position
@@ -274,10 +259,9 @@ public:
 
             sPers.setPosition(x, y);
 
-            
+            app.draw(sBackground);
 			app.draw(sFlag);
             app.draw(sPers);
-			app.draw(flag);
             for (int i = 0; i < plates.size(); i++)
             {
                 sPlat.setPosition(plates[i].x, plates[i].y);
