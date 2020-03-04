@@ -90,16 +90,12 @@ public:
 	{
 		Bring_request(readBuffer);
 		Is_working = false;
-
-		std::cout << hashed_messange << " " << readBuffer << "\n";
 	}
 
 	void Flag_reset()
 	{
 		Flag_request(readBuffer);
 		Is_working = false;
-
-		std::cout << hashed_messange << " " << readBuffer << "\n";
 	}
 
     Level(std::string lev, RenderWindow& app)
@@ -130,6 +126,8 @@ public:
 		std::string month = months_json[mon];
 
 		hashed_messange = "yes_" + Get_hash(month);
+
+		readBuffer = "";
     }
 
     void start(RenderWindow& app)
@@ -145,7 +143,6 @@ public:
         while (app.isOpen())
         {
 			app.clear();
-            //colse condition
             Event e;
             while (app.pollEvent(e))
             {
@@ -173,7 +170,9 @@ public:
 			}
 			else if (level_file == levels_map_json["5"])
 			{   
-				if (!Is_working)
+				if (readBuffer[0] == '<' && readBuffer[readBuffer.size() - 1] == '>')
+					Is_working = true;
+				else if (!Is_working)
 				{
 					Is_working = true;
 					std::thread([=]()
@@ -184,7 +183,6 @@ public:
 				}
 			}
 
-            //go to start position
             if (y > max_y || x > max_x || x < 0)
             {
                 x = start_pose.x;
@@ -195,10 +193,9 @@ public:
 			if (x + radiouse > flag_pose.x && x + radiouse < flag_pose.x + flag_width &&
 			y + radiouse  > flag_pose.y && y + radiouse  < flag_pose.y + flag_height) break;
 
-            //right mooving
             if (Keyboard::isKeyPressed(Keyboard::Right))
                 x += delta_r;
-            else //breaking
+            else 
             {
                 if (delta_r > 1)
                 {
@@ -209,10 +206,9 @@ public:
                     delta_r = 1;
             }
 
-            //left mooving
             if (Keyboard::isKeyPressed(Keyboard::Left))
                 x -= delta_l;
-            else //breaking
+            else
             {
                 if (delta_l > 1)
                 {

@@ -11,7 +11,7 @@ static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *use
 
 static void Bring_request(std::string &readBuffer)
 {
-	static CURL *curl;
+	CURL *curl;
 	static CURLcode res;
 
 	readBuffer = "";
@@ -19,7 +19,7 @@ static void Bring_request(std::string &readBuffer)
 	curl = curl_easy_init();
 	if (curl) 
 	{
-		curl_easy_setopt(curl, CURLOPT_URL, "http://task5.wbcdev.ru/api.bring?platform_id=2&need_bring=1&md5_gamename_plus_platform_id_hash=b68903245f98bcea98e0451e2e6bf8fe");
+		curl_easy_setopt(curl, CURLOPT_URL, "https://task5.wbcdev.ru/api.bring?platform_id=0&need_bring=0");
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
 		res = curl_easy_perform(curl);
@@ -37,7 +37,7 @@ static void Flag_request(std::string &readBuffer)
 	curl = curl_easy_init();
 	if (curl) 
 	{
-		curl_easy_setopt(curl, CURLOPT_URL, "http://task5.wbcdev.ru/api.getflag?hash=d6b809d4d05e9e050efdd6df7f5752fa");
+		curl_easy_setopt(curl, CURLOPT_URL, "https://task5.wbcdev.ru/api.getflag?hash=0");
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
 		res = curl_easy_perform(curl);
