@@ -19,8 +19,16 @@ static void Bring_request(std::string &readBuffer)
 	curl = curl_easy_init();
 	if (curl) 
 	{
-		curl_easy_setopt(curl, CURLOPT_URL, "https://task5.wbcdev.ru/api.bring?platform_id=0&need_bring=0");
+		
+		
+		curl_easy_setopt(curl, CURLOPT_URL, "http://task5.wbcdev.ru/api.bring?platform_id=0&need_bring=0");
+
+		curl_easy_setopt(curl, CURLOPT_CAINFO, NULL);
+		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
+		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
+
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
 		res = curl_easy_perform(curl);
 		curl_easy_cleanup(curl);
@@ -37,7 +45,7 @@ static void Flag_request(std::string &readBuffer)
 	curl = curl_easy_init();
 	if (curl) 
 	{
-		curl_easy_setopt(curl, CURLOPT_URL, "https://task5.wbcdev.ru/api.getflag?hash=0");
+		curl_easy_setopt(curl, CURLOPT_URL, "http://task5.wbcdev.ru/api.getflag?hash=0");
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
 		res = curl_easy_perform(curl);
